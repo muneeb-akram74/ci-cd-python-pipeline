@@ -24,18 +24,25 @@ jobs:
           . venv/bin/activate
           pip install -r requirements.txt
 
-
       - name: Set Up Kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: 'v1.21.0'  # specify your required kubectl version
-    
+
       - name: Create .kube directory
         run: mkdir -p $HOME/.kube
         
       - name: Configure Kubeconfig
         run: echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config 
-    
+
+      - name: Debug Kubeconfig
+        run: |
+          kubectl config view
+          kubectl get nodes  # This will fail if kubectl is not configured correctly
+
+      - name: Set Kube Context
+        run: kubectl config use-context kind-cka-cluster1  # Replace with your context name
+
       - name: Apply Kubernetes Configurations
         run: |
           kubectl apply -f deployment.yaml
@@ -46,7 +53,6 @@ jobs:
           . venv/bin/activate
           python -m unittest discover -s tests
 
-        
       - name: Lint with flake8
         run: |
           . venv/bin/activate
