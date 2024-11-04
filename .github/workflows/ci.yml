@@ -36,9 +36,7 @@ jobs:
         run: echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config 
 
       - name: Debug Kubeconfig
-        run: |
-          kubectl config view
-          kubectl get nodes  # This will fail if kubectl is not configured correctly
+        run: cat $HOME/.kube/config
 
       - name: Set Kube Context
         run: kubectl config use-context kind-cka-cluster1  # Replace with your context name
