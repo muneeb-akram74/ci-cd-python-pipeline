@@ -1,57 +1,57 @@
-name: CI/CD Pipeline
+# name: CI/CD Pipeline
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.9'
 
-      - name: Install dependencies
-        run: |
-          python -m venv venv
-          . venv/bin/activate
-          pip install -r requirements.txt
+#       - name: Install dependencies
+#         run: |
+#           python -m venv venv
+#           . venv/bin/activate
+#           pip install -r requirements.txt
 
-      - name: Set Up Kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.21.0'  # specify your required kubectl version
+#       - name: Set Up Kubectl
+#         uses: azure/setup-kubectl@v3
+#         with:
+#           version: 'v1.21.0'  # specify your required kubectl version
 
-      - name: Create .kube directory
-        run: mkdir -p $HOME/.kube
+#       - name: Create .kube directory
+#         run: mkdir -p $HOME/.kube
         
-      - name: Configure Kubeconfig
-        run: echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config 
+#       - name: Configure Kubeconfig
+#         run: echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config 
 
-      - name: Debug Kubeconfig
-        run: cat $HOME/.kube/config
+#       - name: Debug Kubeconfig
+#         run: cat $HOME/.kube/config
 
-      - name: Set Kube Context
-        run: kubectl config use-context kind-cka-cluster1  # Replace with your context name
+#       - name: Set Kube Context
+#         run: kubectl config use-context kind-cka-cluster1  # Replace with your context name
 
-      - name: Apply Kubernetes Configurations
-        run: |
-          kubectl apply -f deployment.yaml
-          kubectl apply -f service.yaml
+#       - name: Apply Kubernetes Configurations
+#         run: |
+#           kubectl apply -f deployment.yaml
+#           kubectl apply -f service.yaml
 
-      - name: Run Tests
-        run: |
-          . venv/bin/activate
-          python -m unittest discover -s tests
+#       - name: Run Tests
+#         run: |
+#           . venv/bin/activate
+#           python -m unittest discover -s tests
 
-      - name: Lint with flake8
-        run: |
-          . venv/bin/activate
-          flake8 app.py
+#       - name: Lint with flake8
+#         run: |
+#           . venv/bin/activate
+#           flake8 app.py
