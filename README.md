@@ -68,7 +68,7 @@ The CI/CD pipeline is configured in `.github/workflows/ci.yml`. It includes the 
 
 ## License
 
-MIT License - see LICENSE for details.
+[MIT License](./LICENSE) - see LICENSE for details.
 
 Feel free to open issues or submit pull requests if you would like to contribute to this project.
 
